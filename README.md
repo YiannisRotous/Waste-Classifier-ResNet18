@@ -57,3 +57,11 @@ This chart ranks the classes from highest to lowest accuracy on the test set.
 | **Total Images Tested** | 1,557 |
 | **Best Performing Class** | Batteries / Shoes |
 | **Most Complex Class** | Plastic |
+
+## ⏱️ Computational Efficiency (ResNet18)
+| Metric | Value |
+| :--- | :--- |
+| **Time per Epoch** | ~70 seconds |
+| **Total Training Time** | ~58 minutes (50 Epochs) |
+| **Hardware** | NVIDIA T4 GPU (Google Colab) |
+| **Official Test Accuracy** | 92.63% |
