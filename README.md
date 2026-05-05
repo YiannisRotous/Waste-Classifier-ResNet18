@@ -56,27 +56,47 @@ To evaluate the impact of model depth on classification accuracy, we compared a 
 * **Reflective Material Gains:** The deeper architecture showed notable gains in identifying **Metal** (increasing from 64 to 69) and **White-Glass** (increasing from 65 to 72). This suggests that the additional layers allow the network to learn the subtle gradients and edge definitions unique to reflective surfaces.
 
 ### 2. Category Accuracy Leaderboard
-This chart ranks the classes from highest to lowest accuracy on the test set.
+The primary performance leap for the **50-layer model** was observed in the most challenging categories, specifically **Plastic** and **White-Glass**, which previously acted as the "weakest links" in the baseline model.
 
-<img width="989" height="790" alt="Sorted18" src="https://github.com/user-attachments/assets/d6820657-f7db-444b-8fe2-0c35441985fc" />
+* **18-Layer Model:** Struggled significantly with **Plastic**, recording the lowest accuracy at **70.9%**.
+* **50-Layer Model:** Boosted **Plastic** accuracy to **82.6%**, representing a massive **+11.7% gain** through deeper feature extraction.
+  
+<table>
+  <tr>
+    <td><b>18-Layer Accuracy by Category</b></td>
+    <td><b>50-Layer Accuracy by Category</b></td>
+  </tr>
+  <tr>
+    <td><img src="https://github.com/user-attachments/assets/d6820657-f7db-444b-8fe2-0c35441985fc" width="400"></td>
+    <td><img src="https://github.com/user-attachments/assets/42cd810f-6c92-44f4-ae02-e251556cc13b" width="400"></td>
+  </tr>
+</table>
 
-**Analysis:**
-* **Top Performers:** Categories like **Batteries**, **Shoes**, and **Green Glass** achieved nearly 100% accuracy. These items have highly consistent shapes and colors that the ResNet18 feature extractors identified easily.
-* **Challenges:** **Plastic** and **Paper** appear slightly lower on the leaderboard (though still remarkably high). This is likely due to the high "intra-class variance"—for example, paper can be a flat sheet, a crumpled ball, or a shredded pile, making it harder for the model to find a single "canonical" shape.
+
+**Key Observations:**
+
+* **Top-Tier Consistency:** Both models excel at classifying **Biological** waste and **Trash**, but the 50-layer model pushes **Biological** performance to a near-perfect **99.0%**.
+* **Resolution of Ambiguity:** The 50-layer model shows a significant increase in **White-glass** (+9.1%) and **Metal** (+6.6%) accuracy. This confirms that the additional depth allows the network to better interpret the complex light patterns found on reflective and transparent surfaces.
+* **Improved Glass Sorting:** **Brown-glass** accuracy saw a substantial rise from **90.0% to 96.7%**. This suggests the deeper architecture is much more efficient at distinguishing color-specific glass textures from other transparent contaminants.
+* **Diminishing Returns on Simple Textures:** Categories with distinct, non-reflective textures like **Clothes** and **Green-glass** remained stable across both architectures. This indicates that while the 50-layer model is essential for difficult materials, the 18-layer model is already highly capable of identifying textiles and colored glass.
 
 
-## 📈 Summary Table
-| Metric | Result |
-| :--- | :--- |
-| **Final Test Accuracy** | **92.63%** |
-| **Total Images Tested** | 1,557 |
-| **Best Performing Class** | Batteries / Shoes |
-| **Most Complex Class** | Plastic |
+### 📈 Global Performance Summary
+| Metric | 18-Layer Model | 50-Layer Model | Delta |
+| :--- | :--- | :--- | :--- |
+| **Final Test Accuracy** | **92.63%** | **94.76%** | **+2.13%** |
+| **Total Images Tested** | 1,557 | 1,557 | — |
+| **Best Performing Class** | Batteries / Shoes | Biological / Trash | — |
+| **Most Complex Class** | Plastic (70.9%) | Plastic (82.6%) | **+11.7%** |
 
-## ⏱️ Computational Efficiency (ResNet18)
-| Metric | Value |
-| :--- | :--- |
-| **Time per Epoch** | ~70 seconds |
-| **Total Training Time** | ~58 minutes (50 Epochs) |
-| **Hardware** | NVIDIA T4 GPU (Google Colab) |
-| **Official Test Accuracy** | 92.63% |
+### ⏱️ Computational Efficiency
+*Testing conducted on an **NVIDIA T4 GPU** (Google Colab).*
+
+| Metric | 18-Layer (ResNet-18) | 50-Layer (ResNet-50) | Increase |
+| :--- | :--- | :--- | :--- |
+| **Time per Epoch** | ~70 seconds | 154 seconds | **+120%** |
+| **Total Training Time** | ~58 minutes | ~128 minutes | **+70 mins** |
+| **Epochs** | 50 | 50 | — |
+
+### 💡 Key Takeaway
+While the **50-layer model** requires more than double the training time per epoch, it is the superior choice for this application. The **2.13% gain** in overall accuracy is driven primarily by its success in the "Most Complex Class" (**Plastic**), where it improved reliability by nearly **12%**. For industrial recycling tasks, this reduction in misclassification far outweighs the additional computational cost.
