@@ -31,14 +31,29 @@ The training phase was designed as a comparative study between two architectures
 ## 📊 Results & Analysis
 
 ### 1. Confusion Matrix
-The confusion matrix highlights the high precision of the model, with a very strong diagonal line.
+To evaluate the impact of model depth on classification accuracy, we compared a baseline **18-layer architecture** against a deeper **50-layer variant**. The primary bottleneck for the 18-layer model was the confusion between **Plastic** and **White-Glass**.
 
-<img width="997" height="925" alt="ConfMat18" src="https://github.com/user-attachments/assets/21b3f632-37d0-4050-90ef-20e463495470" />
+* **18-Layer Model:** Misclassified **12 instances** of Plastic as White-Glass.
+* **50-Layer Model:** Reduced this confusion to **7 instances**, representing a **~42% improvement** in distinguishing between these two transparent/reflective materials.
 
-**Key Observations:**
-* **High Confidence:** Most classes show very little leakage, especially distinct categories like **Batteries** and **Clothes**.
-* **Minor Confusion:** There is a slight visual overlap between **Plastic** and **White Glass**, which is expected given their similar transparency and reflective properties under certain lighting conditions.
-* **Textile Distinction:** The model successfully distinguishes between **Clothes** and **Shoes** with near-perfect accuracy, justifying the decision to split textiles into two categories.
+<table>
+  <tr>
+    <td><b>18-Layer Confusion Matrix</b></td>
+    <td><b>50-Layer Confusion Matrix</b></td>
+  </tr>
+  <tr>
+    <td><img src="https://github.com/user-attachments/assets/21b3f632-37d0-4050-90ef-20e463495470" width="400"></td>
+    <td><img src="https://github.com/user-attachments/assets/8ebaae55-3836-45e6-9ae2-93dd0750062c" width="400"></td>
+  </tr>
+</table>
+
+
+### **Key Observations:**
+
+* **High Confidence:** Both models show exceptional precision in distinct categories. The **50-layer model** maintains high accuracy for **Batteries** (89) and **Clothes** (522), showing virtually no leakage into unrelated categories, which validates the model's ability to handle high-volume classes.
+* **Minor Confusion:** While the **50-layer model** significantly improved material detection, a slight visual overlap between **Plastic** and **White Glass** remains the most common error. This is expected given their nearly identical transparency and reflective properties under varied lighting conditions.
+* **Textile Distinction:** The model successfully distinguishes between **Clothes** and **Shoes** with near-perfect accuracy (improving Shoe detection from 187 to 190 in the 50-layer model). This justifies the decision to split textiles into two separate categories, as the deeper model captures the textural differences effectively.
+* **Reflective Material Gains:** The deeper architecture showed notable gains in identifying **Metal** (increasing from 64 to 69) and **White-Glass** (increasing from 65 to 72). This suggests that the additional layers allow the network to learn the subtle gradients and edge definitions unique to reflective surfaces.
 
 ### 2. Category Accuracy Leaderboard
 This chart ranks the classes from highest to lowest accuracy on the test set.
